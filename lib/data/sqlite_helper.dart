@@ -15,27 +15,25 @@ class SQLiteHelper {
   final String tableNotes = 'notes';
 
   static Database _db;
-  final int version = 1;
+  final int _version = 1;
   static SQLiteHelper _singleton = SQLiteHelper._internal();
+
+  SQLiteHelper._internal(); // private named constructor
 
   factory SQLiteHelper() {
     return _singleton;
   }
 
-  SQLiteHelper._internal(); // private named constructor
-
   Future<Database> init() async {
     Directory dir = await getApplicationDocumentsDirectory();
     String dbPath = join(dir.path, "notes.db");
-    Database dbNotes =
-        await openDatabase(dbPath, version: version, onCreate: _createDb);
-    return dbNotes;
+    return await openDatabase(dbPath, version: _version, onCreate: _createDb);
   }
 
   Future _createDb(Database db, int version) async {
-    String query = 'CREATE TABLE $tableNotes ($colId INTEGER PRIMARY KEY, ' +
-        '$colName TEXT, $colDate TEXT, $colNote TEXT, $colPosition INTEGER)';
-    await _db.execute(query);
+    String query =
+        'CREATE TABLE $tableNotes ($colId INTEGER PRIMARY KEY, $colName TEXT, $colDate TEXT, $colNote TEXT, $colPosition INTEGER)';
+    await db.execute(query);
   }
 
   Future<List<Note>> getNotes() async {

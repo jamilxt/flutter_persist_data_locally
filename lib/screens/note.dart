@@ -67,6 +67,13 @@ class _NoteScreenState extends State<NoteScreen> {
             widget.note.note = txtNotes.text;
             widget.note.date = txtDate.text;
             widget.note.position = 0;
+            if (widget.isNew) {
+              helper.insertNote(widget.note);
+            } else {
+              helper.updateNote(widget.note);
+            }
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => NotesScreen()));
           }),
     );
   }

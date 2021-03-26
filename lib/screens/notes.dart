@@ -42,14 +42,13 @@ class _NotesScreenState extends State<NotesScreen> {
             return Container();
           } else {
             return ReorderableListView(
-              onReorder: (oldIndex, newIndex) async {
-              },
+              onReorder: (oldIndex, newIndex) async {},
               children: [
                 for (final note in notes)
                   Dismissible(
                       key: Key(note.id.toString()),
                       onDismissed: (direction) {
-
+                        sqLiteHelper.deleteNote(note);
                       },
                       child: Card(
                         key: ValueKey(note.position),
@@ -83,6 +82,8 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   Future<List<Note>> getNotes() async {
-
+    sqLiteHelper = SQLiteHelper();
+    List<Note> notes = await sqLiteHelper.getNotes();
+    return notes ?? [];
   }
 }
