@@ -35,4 +35,29 @@ class SembastDb {
     int id = await store.add(_db, password.toMap());
     return id;
   }
+
+  Future getPasswords() async {
+    await init();
+    final finder = Finder(sortOrders: [SortOrder('name')]);
+    final snapshot = await store.find(_db, finder: finder);
+    return snapshot.map((item) {
+      final pwd = Password.fromMap(item.value);
+      pwd.id = item.key;
+      return pwd;
+    }).toList();
+  }
+
+  Future updatePassword(Password pwd) async {
+    final finder = Finder(filter: Filter.byKey(pwd.id));
+    await store.update(_db, pwd.toMap(), finder: finder);
+  }
+
+  Future deletePassword(Password pwd) async {
+    final finder = Finder(filter: Filter.byKey(pwd.id));
+    await store.delete(_db, finder: finder);
+  }
+
+  Future deleteAll() async {
+    await store.delete(_db);
+  }
 }
