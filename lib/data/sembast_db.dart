@@ -1,3 +1,4 @@
+import 'package:flutter_persist_data_locally/data/sembast_codec.dart';
 import 'package:flutter_persist_data_locally/models/password.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -8,6 +9,7 @@ class SembastDb {
   DatabaseFactory dbFactory = databaseFactoryIo;
   Database _db;
   final store = intMapStoreFactory.store("passwords");
+  var codec = getEncryptSembastCodec(password: 'Password');
 
   static SembastDb _singleton = SembastDb._internal();
 
@@ -27,7 +29,7 @@ class SembastDb {
   Future _openDb() async {
     final docDir = await getApplicationDocumentsDirectory();
     final dbPath = join(docDir.path, 'pass.db');
-    final db = await dbFactory.openDatabase(dbPath);
+    final db = await dbFactory.openDatabase(dbPath, codec: codec);
     return db;
   }
 
