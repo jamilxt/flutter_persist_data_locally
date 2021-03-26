@@ -51,6 +51,7 @@ class SQLiteHelper {
   }
 
   Future<int> insertNote(Note note) async {
+    note.position = await findPosition();
     int result = await _db.insert(tableNotes, note.toMap());
     return result;
   }
@@ -65,5 +66,25 @@ class SQLiteHelper {
     int result =
         await _db.delete(tableNotes, where: '$colId = ?', whereArgs: [note.id]);
     return result;
+  }
+
+  Future<int> findPosition() async {
+    final String sql = 'SELECT max($colPosition) from $tableNotes';
+    List<Map> queryResult = await _db.rawQuery(sql);
+    int position = queryResult.first.values.first;
+    position = (position == null) ? 0 : ++position;
+    return position;
+  }
+
+  Future updatePosition(bool increment, int start, int end) async {
+    String sql;
+    if (increment) {
+      sql = 'UPDATE $tableNotes set $colPosition = $colPosition + 1 ' +
+          'where $colPosition >= $start and $colPosition <= $end';
+    } else {
+      sql = 'UPDATE $tableNotes set $colPosition = $colPosition - 1 ' +
+          'where $colPosition >= $start and $colPosition <= $end';
+    }
+    await _db.rawUpdate(sql);
   }
 }

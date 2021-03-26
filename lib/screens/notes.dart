@@ -42,7 +42,21 @@ class _NotesScreenState extends State<NotesScreen> {
             return Container();
           } else {
             return ReorderableListView(
-              onReorder: (oldIndex, newIndex) async {},
+              onReorder: (oldIndex, newIndex) async {
+                final Note note = notes[oldIndex];
+                if (oldIndex > newIndex) {
+                  await sqLiteHelper.updatePosition(true, newIndex, oldIndex);
+                } else if (oldIndex < newIndex) {
+                  // bug fix:removing the item at oldIndex will shorten the list by 1.
+                  newIndex -= 1;
+                  await sqLiteHelper.updatePosition(false, oldIndex, newIndex);
+                }
+                note.position = newIndex;
+                await sqLiteHelper.updateNote(note);
+                setState(() {
+                  getNotes();
+                });
+              },
               children: [
                 for (final note in notes)
                   Dismissible(
