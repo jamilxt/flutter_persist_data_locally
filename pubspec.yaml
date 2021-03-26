@@ -19,6 +19,7 @@ dependencies:
   path_provider: ^2.0.1
   encrypt: ^4.1.0
   crypto: ^2.1.5
+  sqflite: ^2.0.0+3
 
 dev_dependencies:
   flutter_test:
