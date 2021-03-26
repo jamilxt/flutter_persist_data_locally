@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_persist_data_locally/data/shared_prefs.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -17,10 +18,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
     0xFF795548
   ];
 
-  void setColor(int color) {
-    setState(() {
-      settingColor = color;
+  SPSettings settings;
+
+  @override
+  void initState() {
+    settings = SPSettings();
+    settings.init().then((value) {
+      setState(() {
+        settingColor = settings.getColor();
+      });
     });
+    super.initState();
   }
 
   @override
@@ -62,6 +70,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
+  }
+
+  void setColor(int color) {
+    setState(() {
+      settingColor = color;
+      settings.setColor(color);
+    });
   }
 }
 
