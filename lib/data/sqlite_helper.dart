@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SqliteHelper {
+class SQLiteHelper {
   final String colId = 'id';
   final String colName = 'name';
   final String colDate = 'date';
@@ -16,13 +16,13 @@ class SqliteHelper {
 
   static Database _db;
   final int version = 1;
-  static SqliteHelper _singleton = SqliteHelper._internal();
+  static SQLiteHelper _singleton = SQLiteHelper._internal();
 
-  factory SqliteHelper() {
+  factory SQLiteHelper() {
     return _singleton;
   }
 
-  SqliteHelper._internal(); // private named constructor
+  SQLiteHelper._internal(); // private named constructor
 
   Future<Database> init() async {
     Directory dir = await getApplicationDocumentsDirectory();
