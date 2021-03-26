@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_persist_data_locally/data/shared_prefs.dart';
+
+import '../data/shared_prefs.dart';
+import '../models/font_size.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -20,12 +22,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   SPSettings settings;
 
+  final List<FontSize> fontSizes = [
+    FontSize('small', 12),
+    FontSize('medium', 16),
+    FontSize('large', 20),
+    FontSize('extra-large', 24),
+  ];
+
   @override
   void initState() {
     settings = SPSettings();
     settings.init().then((value) {
       setState(() {
         settingColor = settings.getColor();
+        fontSize = settings.getFontSize();
       });
     });
     super.initState();
@@ -41,6 +51,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          Text(
+            'Choose a Font Size for the App',
+            style: TextStyle(
+              fontSize: fontSize,
+            ),
+          ),
+          DropdownButton(
+            value: fontSize.toString(),
+            items: getDropdownMenuItems(),
+            onChanged: changeSize,
+          ),
           Text('App Main Color'),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -76,6 +97,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       settingColor = color;
       settings.setColor(color);
+    });
+  }
+
+  List<DropdownMenuItem<String>> getDropdownMenuItems() {
+    List<DropdownMenuItem<String>> items = [];
+    for (FontSize fontSize in fontSizes) {
+      items.add(DropdownMenuItem(
+        value: fontSize.size.toString(),
+        child: Text(fontSize.name),
+      ));
+    }
+    return items;
+  }
+
+  void changeSize(String newSize) {
+    settings.setFontSize(double.tryParse(newSize));
+    setState(() {
+      fontSize = double.tryParse(newSize);
     });
   }
 }

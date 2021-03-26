@@ -30,4 +30,16 @@ class SPSettings {
     }
     return color;
   }
+
+  Future setFontSize(double size) {
+    return _sp.setDouble(fontSizeKey, size);
+  }
+
+  double getFontSize() {
+    double fontSize = _sp.getDouble(fontSizeKey);
+    if (fontSize == null) {
+      fontSize = 16;
+    }
+    return fontSize;
+  }
 }
