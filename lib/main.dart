@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_persist_data_locally/screens/home.dart';
 
 import './screens/settings.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SettingsScreen(),
+      home: HomeScreen(),
     );
   }
 }
