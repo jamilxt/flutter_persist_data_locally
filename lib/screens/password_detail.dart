@@ -56,6 +56,11 @@ class _PasswordDetailDialogState extends State<PasswordDetailDialog> {
           onPressed: () {
             widget.password.name = txtName.text;
             widget.password.password = txtPassword.text;
+            SembastDb db = SembastDb();
+            (widget.isNew)
+                ? db.addPassword(widget.password)
+                : db.updatePassword(widget.password);
+
             Navigator.pop(context);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => PasswordsScreen()));
