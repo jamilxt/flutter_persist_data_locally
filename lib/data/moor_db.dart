@@ -18,4 +18,16 @@ class BlogDb extends _$BlogDb {
 
   @override
   int get schemaVersion => 1;
+
+  Future<List<BlogPost>> getPosts() => (select(blogPosts)
+        ..orderBy([
+          (post) => OrderingTerm(expression: post.date, mode: OrderingMode.desc)
+        ]))
+      .get();
+
+  Future<int> insertPost(BlogPost post) => into(blogPosts).insert(post);
+
+  Future<bool> updatePost(BlogPost post) => update(blogPosts).replace(post);
+
+  Future<int> deletePost(BlogPost post) => delete(blogPosts).delete(post);
 }
