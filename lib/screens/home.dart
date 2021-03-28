@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_persist_data_locally/screens/files.dart';
 import 'package:flutter_persist_data_locally/screens/notes.dart';
 import 'package:flutter_persist_data_locally/screens/posts.dart';
 import '../data/shared_prefs.dart';
@@ -100,6 +101,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.pop(context);
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => PostsScreen()));
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Files',
+                    style: TextStyle(
+                      fontSize: fontSize,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => FilesScreen()));
                   },
                 ),
               ],

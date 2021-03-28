@@ -3,8 +3,6 @@ import 'package:flutter_persist_data_locally/data/moor_db.dart';
 import 'package:flutter_persist_data_locally/screens/home.dart';
 import 'package:provider/provider.dart';
 
-import './screens/settings.dart';
-
 void main() {
   runApp(MyApp());
 }
