@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import './posts.dart';
 import '../data/shared_prefs.dart';
 import '../data/moor_db.dart';
@@ -44,6 +45,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    BlogDb blogDb = Provider.of<BlogDb>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Blog View'),
@@ -68,6 +70,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               content: txtContent.text,
               date: (txtDate.text != '') ? formatter.parse(txtDate.text) : null,
             );
+            if (widget.isNew) {
+              blogDb.insertPost(updated);
+            } else {
+              blogDb.updatePost(updated);
+            }
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => PostsScreen()));
           }),

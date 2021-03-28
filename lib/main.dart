@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_persist_data_locally/data/moor_db.dart';
 import 'package:flutter_persist_data_locally/screens/home.dart';
+import 'package:provider/provider.dart';
 
 import './screens/settings.dart';
 
@@ -11,13 +13,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'GlobApp',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return Provider(
+      create: (context) => BlogDb(),
+      child: MaterialApp(
+        title: 'GlobeApp',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: HomeScreen(),
       ),
-      home: HomeScreen(),
     );
   }
 }

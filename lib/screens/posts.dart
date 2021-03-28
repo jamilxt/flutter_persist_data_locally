@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../data/shared_prefs.dart';
 import './post_detail.dart';
 import '../data/moor_db.dart';
@@ -29,6 +30,7 @@ class _PostsScreenState extends State<PostsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    BlogDb blogDb = Provider.of<BlogDb>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Blog Posts'),
@@ -45,7 +47,7 @@ class _PostsScreenState extends State<PostsScreen> {
                     builder: (context) => PostDetailScreen(post, true)));
           }),
       body: FutureBuilder(
-        future: null,
+        future: blogDb.getPosts(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             posts = snapshot.data;
@@ -62,7 +64,9 @@ class _PostsScreenState extends State<PostsScreen> {
                   : '';
               return Dismissible(
                 key: Key(posts[index].id.toString()),
-                onDismissed: (direction) {},
+                onDismissed: (direction) {
+                  blogDb.deletePost(posts[index]);
+                },
                 child: ListTile(
                   title: Text(posts[index].name),
                   subtitle: Text(postDate),
